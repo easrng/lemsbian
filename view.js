@@ -20,8 +20,11 @@ function h(type, props, ...children) {
 const html = htm.bind(h);
 let next = "https://t.me/s/tilliegaystuff";
 console.log("init");
+let loading=false;
 async function load() {
-  if (swiper.activeIndex > swiper.slides.length - 3 && next) {
+  if (swiper.activeIndex > swiper.slides.length - 3 && next && (!loading)) {
+    loading=true;
+    try{
     let index = swiper.activeIndex;
     let d = new DOMParser().parseFromString(
       await (await fetch(
@@ -41,7 +44,8 @@ async function load() {
         `
       )
     );
-    //setTimeout(() => swiper.slideTo(index - 1, 0, false), 100);
+    }catch(e){}
+    loading=false;
   }
 }
 swiper.on("slideChange", load);
