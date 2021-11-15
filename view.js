@@ -10,7 +10,8 @@ const swiper = new Swiper(".mySwiper", {
   keyboard: {
     enabled: true,
     onlyInViewport: false
-  }
+  },
+  zoom: true
 });
 swiper.on("navigationShow", ()=>swiper.$el.removeClass("ui-hidden"))
 swiper.on("navigationHide", ()=>swiper.$el.addClass("ui-hidden"))
@@ -47,7 +48,7 @@ async function load(doit) {
     (dir?swiper.prependSlide:swiper.appendSlide)(
       images.map(
         i => html`
-          <div className=${"swiper-slide "+i.id}><img src=${i.src} />${i.caption?html`<div className="caption">${i.caption}</div>`:""}</div>
+          <div className=${"swiper-slide "+i.id}><div className="swiper-zoom-container"><img src=${i.src} /></div>${i.caption?html`<div className="caption">${i.caption}</div>`:""}</div>
         `
       )
     );
