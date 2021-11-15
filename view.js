@@ -20,7 +20,7 @@ function h(type, props, ...children) {
   return ele;
 }
 const html = htm.bind(h);
-let next = "https://t.me/s/tilliegaystuff", scrollTo;
+let next = "https://t.me/s/tilliegaystuff", scrollTo, prev;
 try{
   let m=location.hash.match(/\#post-(\d+)-(\d)/);
   scrollTo={post:parseInt(m[1]), offset: parseInt(m[2]), id: decodeURIComponent(location.hash.slice(1))};
@@ -29,19 +29,22 @@ try{
 console.log("init");
 let loading=false;
 async function load() {
-  if (swiper.activeIndex > swiper.slides.length - 3 && next && (!loading)) {
+  if (((swiper.activeIndex > swiper.slides.length - 3 && next) || (swiper.activeIndex < 2 && prev)) && (!loading)) {
     loading=true;
     try{
     let index = swiper.activeIndex;
+    let dir = swiper.activeIndex<(swiper.slides.length/2);
     let d = new DOMParser().parseFromString(
       await (await fetch(
-        "https://lesmbian.easrng.workers.dev/" + new URL(next).search
+        "https://lesmbian.easrng.workers.dev/" + new URL(dir?prev:next).search
       )).json(),
       "text/html"
     );
-    let images = Array.from(d.querySelectorAll(".tgme_widget_message")).map(m=>Array.from(m.querySelectorAll(".tgme_widget_message_photo_wrap")).map((e, i)=>({src:e.style.backgroundImage.match(/url\(['"](.+)['"]\)/)[1],id:"post-"+m.dataset.post.split("/")[1]+"-"+i, caption: m.querySelector(".tgme_widget_message_text")?.innerText.trim()}))).flat();
-    next = d.querySelector(".tme_messages_more").href;
-    swiper.appendSlide(
+    let images = Array.from(d.querySelectorAll(".tgme_widget_message")).reverse().map(m=>Array.from(m.querySelectorAll(".tgme_widget_message_photo_wrap")).map((e, i)=>({src:e.style.backgroundImage.match(/url\(['"](.+)['"]\)/)[1],id:"post-"+m.dataset.post.split("/")[1]+"-"+i, caption: m.querySelector(".tgme_widget_message_text")?.innerText.trim()}))).flat();
+    for(let l of d.querySelectorAll(".tme_messages_more"))
+      if(l.previousElementSibling) prev=l.href
+      else next=l.href
+    (dir?swiper.prependSlide:swiper.appendSlide)(
       images.map(
         i => html`
           <div className=${"swiper-slide "+i.id}><img src=${i.src} />${i.caption?html`<div className="caption">${i.caption}</div>`:""}</div>
