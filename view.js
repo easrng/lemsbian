@@ -28,8 +28,8 @@ try{
 }catch(e){}
 console.log("init");
 let loading=false;
-async function load() {
-  if (((swiper.activeIndex > swiper.slides.length - 3 && next) || (swiper.activeIndex < 2 && prev)) && (!loading)) {
+async function load(doit) {
+  if (((swiper.activeIndex > swiper.slides.length - 3 && next) || (swiper.activeIndex < 2 && prev) || doit) && (!loading)) {
     loading=true;
     try{
     let index = swiper.activeIndex;
