@@ -45,12 +45,25 @@
         object-fit: contain;
       }
       .swiper-button-next,
-      swiper-button-prev {
+      swiper-button-prev,
+      .caption{
         opacity: 1;
         transition: opacity 0.75s ease;
       }
       .swiper-button-hidden {
         opacity: 0 !important;
+      }
+      
+      .caption {
+        position: absolute;
+        bottom: 0;
+        padding: 0.5rem;
+        background: #000a;
+        width: 100%;
+      }
+      .swiper-wrapper:not(.swiper-wrapper ~ .swiper-button-prev:not(.swiper-button-hidden)) .caption {
+        opacity: 0;
+        user-select: none;
       }
     </style>
   </head>
