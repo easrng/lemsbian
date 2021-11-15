@@ -62,3 +62,18 @@ async function load(doit) {
 swiper.on("slideChange", load);
 swiper.on("slideChange", ()=>history.replaceState(document.title,null,"#"+encodeURIComponent(Array.from(swiper.slides[swiper.activeIndex].classList).filter(e=>e.startsWith("post-"))[0])));
 load();
+window.addEventListener("hashchange", ()=>{
+  try{
+    let m=location.hash.match(/\#post-(\d+)-(\d)/);
+    scrollTo={post:parseInt(m[1]), offset: parseInt(m[2]), id: decodeURIComponent(location.hash.slice(1))};
+    let e=document.querySelector("."+scrollTo.id);
+    if(e){
+      swiper.slideTo(swiper.slides.indexOf(e))
+      scrollTo=null;
+      return;
+    }
+    prev=next="https://lesmbian.easrng.workers.dev/?before="+(scrollTo.post-(scrollTo.post%20)+20);
+    swiper.removeAllSlides()
+    load()
+  }catch(e){}
+})
