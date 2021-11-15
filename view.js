@@ -57,5 +57,5 @@ async function load() {
   }
 }
 swiper.on("slideChange", load);
-swiper.on("slideChange", ()=>history.replaceState(document.title,null,"#"+encodeURIComponent(Array.from(swiper.slides[swiper.activeIndex].classList).filter(e=>e.startsWith("post-"))[0]));
+swiper.on("slideChange", ()=>history.replaceState(document.title,null,"#"+encodeURIComponent(Array.from(swiper.slides[swiper.activeIndex].classList).filter(e=>e.startsWith("post-"))[0])));
 load();
