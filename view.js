@@ -12,6 +12,8 @@ const swiper = new Swiper(".mySwiper", {
     onlyInViewport: false
   }
 });
+swiper.on("navigationShow", ()=>swiper.$el.removeClass("ui-hidden"))
+swiper.on("navigationHide", ()=>swiper.$el.addClass("ui-hidden"))
 function h(type, props, ...children) {
   let ele = Object.assign(document.createElement(type), props);
   ele.append(...children);
