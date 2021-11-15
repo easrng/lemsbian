@@ -43,7 +43,7 @@ async function load() {
     let images = Array.from(d.querySelectorAll(".tgme_widget_message")).reverse().map(m=>Array.from(m.querySelectorAll(".tgme_widget_message_photo_wrap")).map((e, i)=>({src:e.style.backgroundImage.match(/url\(['"](.+)['"]\)/)[1],id:"post-"+m.dataset.post.split("/")[1]+"-"+i, caption: m.querySelector(".tgme_widget_message_text")?.innerText.trim()}))).flat();
     for(let l of d.querySelectorAll(".tme_messages_more"))
       if(l.previousElementSibling) prev=l.href
-      else next=l.href
+      else next=l.href;
     (dir?swiper.prependSlide:swiper.appendSlide)(
       images.map(
         i => html`
