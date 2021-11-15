@@ -23,7 +23,7 @@ const html = htm.bind(h);
 let next = "https://t.me/s/tilliegaystuff", scrollTo;
 try{
   scrollTo=parseInt(location.hash.match(/\#post-(\d+)/)[1])
-  next="https://lesmbian.easrng.workers.dev/?before="+(n-(n%20)+20);
+  next="https://lesmbian.easrng.workers.dev/?before="+(scrollTo-(scrollTo%20)+20);
 }catch(e){}
 console.log("init");
 let loading=false;
