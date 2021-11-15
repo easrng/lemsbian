@@ -32,15 +32,12 @@ async function load() {
       )).json(),
       "text/html"
     );
-    let images = Array.from(
-      d.querySelectorAll(".tgme_widget_message_photo_wrap")
-    ).map(e => e.style.backgroundImage.match(/url\(['"](.+)['"]\)/)[1]);
+    let images = Array.from(d.querySelectorAll(".tgme_widget_message")).map(m=>Array.from(m.querySelectorAll(".tgme_widget_message_photo_wrap")).map(e=>({src:e.style.backgroundImage.match(/url\(['"](.+)['"]\)/)[1],id:m.dataset.post, caption: m.querySelector(".tgme_widget_message_text")?.innerText.trim()}))).flat();
     next = d.querySelector(".tme_messages_more").href;
-    //next = json.next;
     swiper.appendSlide(
       images.map(
         i => html`
-          <div className="swiper-slide"><img src=${i} /></div>
+          <div className="swiper-slide" data-id=${i.id}><img src=${i.src} />${i.caption?html`<div class="caption">${i.caption}</div>`:""}</div>
         `
       )
     );
@@ -49,4 +46,5 @@ async function load() {
   }
 }
 swiper.on("slideChange", load);
+swiper.on("slideChange", ()=>history.replaceState(document.title,null,"#"+encodeURIComponent(swiper.slides[swiper.activeIndex].dataset.id)));
 load();
